@@ -7,3 +7,11 @@ export function getAllPodcasts() {
         }, 800);
     });
 }
+
+export function getPodcastDetail(podcastId) {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve(mockData.find(podcast => podcast.id === podcastId));
+		}, 800);
+	});
+}

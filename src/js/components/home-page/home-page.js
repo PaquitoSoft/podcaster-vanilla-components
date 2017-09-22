@@ -1,4 +1,5 @@
 import { getAllPodcasts } from '../../api/podcaster.js';
+import PodcastSummary from './podcast-summary.js';
 
 class HomePage {
 
@@ -29,6 +30,8 @@ class HomePage {
     }
 
     render() {
+		const podcasts = this.filteredPodcasts.map(podcast => new PodcastSummary(podcast));
+
         return `
             <div class="podcasts-grid">
                 <div class="row filter">
@@ -41,7 +44,7 @@ class HomePage {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row podcasts">
-                            <i>Listado de podcasts</i>
+                            ${podcasts}
                         </div>
                     </div>
                 </div>
