@@ -1,27 +1,21 @@
-import HomePage from './components/home-page/home-page.js';
+import Router from './components/shared/router/router.js';
 
-class App {
-    render() {
-        return `
-            <div>
-                <div class="header clearfix">
-                    <h3 class="text-muted">
-                        <a href="/">Podcaster</a>
-                        <div class="spinner hidden">
-                            <div class="double-bounce1"></div>
-                            <div class="double-bounce2"></div>
-                        </div>
-                    </h3>
-                </div>
+const app = document.createElement('div');
 
-                <div class="main-content">
-                    ${(new HomePage()).render()}
-                </div>
-            </div>
-        `;
-    }
-}
+app.innerHTML = `
+	<div class="header clearfix">
+		<h3 class="text-muted">
+			<a href="/">Podcaster</a>
+			<div class="spinner hidden">
+				<div class="double-bounce1"></div>
+				<div class="double-bounce2"></div>
+			</div>
+		</h3>
+	</div>
 
-const app = new App();
+	<div class="main-content"></div>
+`;
 
-document.getElementById('root').innerHTML = app.render();
+Router.setup(app.querySelector('.main-content'));
+
+document.getElementById('root').appendChild(app);

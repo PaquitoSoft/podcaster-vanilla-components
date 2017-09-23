@@ -3,34 +3,22 @@ import PodcastSummary from './podcast-summary.js';
 
 class HomePage {
 
-    constructor(/*data*/) {
-        // this.originalPodcasts = data.podcasts;
-        // this.filteredPodcasts = data.podcasts.concat([]); // clone
-
-        this.originalPodcasts = [];
-        this.filteredPodcasts = [];
-
-        setTimeout(() => {
-            this.onMounted();
-        }, 500);
+    constructor(podcasts = []) {
+        this.originalPodcasts = podcasts;
+        this.filteredPodcasts = podcasts.concat([]); // clone
     }
 
-    onMounted() {
-        getAllPodcasts()
-            .then(podcasts => {
-                this.originalPodcasts = podcasts;
-                this.filteredPodcasts = podcasts.concat([]); // clone
-                this.render();
-            });
-    }
-
-    filterPodcasts(filterValue) {
+    filterPodcasts(event) {
+		event.preventDefault();
+		const regExp = new RegExp(event.target.value, 'i');
         this.filteredPodcasts = podcasts.filter(podcast => regExp.test(podcast.name + podcast.author));
         this.render();
     }
 
     render() {
-		const podcasts = this.filteredPodcasts.map(podcast => new PodcastSummary(podcast));
+		const podcasts = this.filteredPodcasts
+			.map(podcast => (new PodcastSummary(podcast)).render())
+			.join('');
 
         return `
             <div class="podcasts-grid">
@@ -38,7 +26,7 @@ class HomePage {
                     <div class="col-md-5 col-md-offset-7">
                         <span class="badge">${this.filteredPodcasts.length}</span>
                         <input id="filter" type="text" class="form-control input-lg" autoFocus
-                            placeholder="Filter podcasts..." on-input="filterPodcasts" value="">
+                            placeholder="Filter podcasts..." value="">
                     </div>
                 </div>
                 <div class="row">
@@ -51,6 +39,10 @@ class HomePage {
             </div>
         `;
     }
+}
+
+HomePage.dataLoader = () => {
+	return getAllPodcasts();
 }
 
 export default HomePage;
