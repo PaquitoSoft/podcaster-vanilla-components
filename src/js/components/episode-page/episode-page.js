@@ -1,25 +1,25 @@
 import { getPodcastDetail } from '../../api/podcaster.js';
+import BaseComponent from '../shared/base-component/base-component.js';
 import Sidebar from '../shared/sidebar/sidebar.js';
 
-class EpisodePage {
+class EpisodePage extends BaseComponent {
 
 	constructor({ podcast, currentEpisode }) {
-		this.podcast = podcast;
-		this.currentEpisode = currentEpisode;
+		super({	podcast, currentEpisode });
 	}
 
-	render() {
+	html() {
 		return `
 			<div>
-				${(new Sidebar(this.podcast)).render()}
+				${(new Sidebar(this.state.podcast)).render()}
 
 				<div class="col-md-8 col-md-offset-1 section">
 					<div class="episode-detail">
-						<div class="title">${this.currentEpisode.title}</div>
-						<div class="subtitle">${this.currentEpisode.description}</div>
+						<div class="title">${this.state.currentEpisode.title}</div>
+						<div class="subtitle">${this.state.currentEpisode.description}</div>
 						<hr/>
 						<div class="player">
-							<audio src=${this.currentEpisode.mediaUrl} controls></audio>
+							<audio src=${this.state.currentEpisode.mediaUrl} controls></audio>
 						</div>
 					</div>
 				</div>

@@ -1,14 +1,15 @@
 import { getPodcastDetail } from '../../api/podcaster.js';
+import BaseComponent from '../shared/base-component/base-component.js';
 import Sidebar from '../shared/sidebar/sidebar.js';
 
-class PodcastPage {
+class PodcastPage extends BaseComponent {
 
 	constructor(podcast = {}) {
-		this.podcast = podcast;
+		super({ podcast });
 	}
 
-	render() {
-		const podcast = this.podcast;
+	html() {
+		const podcast = this.state.podcast;
 
 		const episodes = podcast.episodes.map(episode => {
 			return `

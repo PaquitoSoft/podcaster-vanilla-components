@@ -1,11 +1,13 @@
-class Sidebar {
+import BaseComponent from '../base-component/base-component.js';
+
+class Sidebar extends BaseComponent {
 
 	constructor(podcast = {}) {
-		this.podcast = podcast;
+		super({ podcast });
 	}
 
-	render() {
-		const podcast = this.podcast;
+	html() {
+		const podcast = this.state.podcast;
 
 		return `
 			<div class="col-md-3 section">
