@@ -16,6 +16,16 @@ app.innerHTML = `
 	<div class="main-content"></div>
 `;
 
+const appSpinner = app.querySelector('.spinner');
+
+document.addEventListener('podcaster::loading', event => {
+	if (event.detail.isLoading) {
+		appSpinner.classList.remove('hidden');
+	} else {
+		appSpinner.classList.add('hidden');
+	}
+});
+
 Router.setup(app.querySelector('.main-content'));
 
 document.getElementById('root').appendChild(app);

@@ -1,4 +1,5 @@
 # TODO
 * Filter podcasts in home page
-* Loader indicator
 * Caché responses
+
+* Better implementation of App 'component'

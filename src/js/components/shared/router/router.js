@@ -27,6 +27,13 @@ const Router = {
 		return routingConfig.find(configItem => configItem.pattern.test(url));
 	},
 
+	sendLoadingEvent(isLoading) {
+		const event = new CustomEvent('podcaster::loading', {
+			detail: { isLoading }
+		});
+		document.dispatchEvent(event);
+	},
+
 	changeUrlHandler(url) {
 		this.currentRouteConfig = this.getRouteConfigForUrl(url);
 
@@ -36,13 +43,17 @@ const Router = {
 			this.currentRouteConfig.paramsResolver(url.match(this.currentRouteConfig.pattern)) :
 			{};
 
+		this.sendLoadingEvent(true);
+
 		this.currentRouteConfig.component.dataLoader(urlParams)
 			.then(data => {
 				this.routeData = data;
 				this.render();
 				window.history.pushState(null, '', url);
+				this.sendLoadingEvent(false);
 			})
 			.catch(err => {
+				this.sendLoadingEvent(false);
 				console.error(`Error trying to navigate: ${err}`);
 				console.error(err.stack);
 			})
