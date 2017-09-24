@@ -20,6 +20,10 @@ const Router = {
 			}
 		});
 
+		window.addEventListener('popstate', () => {
+			this.changeUrlHandler(window.location.pathname, true);
+		});
+
 		this.changeUrlHandler(window.location.pathname);
 	},
 
@@ -34,7 +38,7 @@ const Router = {
 		document.dispatchEvent(event);
 	},
 
-	changeUrlHandler(url) {
+	changeUrlHandler(url, isHistoryEvent) {
 		this.currentRouteConfig = this.getRouteConfigForUrl(url);
 
 		if (!this.currentRouteConfig) throw new Error('No route found for URL: ' + url);
@@ -49,9 +53,12 @@ const Router = {
 			.then(data => {
 				this.routeData = data;
 				this.render();
-				window.history.pushState(null, '', url);
 				this.sendLoadingEvent(false);
 				window.scrollTo(0, 0);
+
+				if (!isHistoryEvent) {
+					window.history.pushState(null, '', url);
+				}
 			})
 			.catch(err => {
 				this.sendLoadingEvent(false);
