@@ -1,3 +1,5 @@
+import { getValue, storeValue } from './local-cache.js';
+
 const _xmlParser = new DOMParser();
 
 function checkResponseStatus(res) {
@@ -33,27 +35,26 @@ function parseJson(res) {
 	});
 }
 
-// function cacheResponse(ttl, key) {
-// 	return (data) => {
-// 		if (ttl) {
-// 			console.log('Ajax::cacheResponse# Caching response with key:', key, 'for', ttl, 'minutes.');
-// 			lscache.set(data.url, data.result, ttl); // Last parameter is TTL in minutes
-// 		}
-// 		return data.result;
-// 	}
-// }
+function cacheResponse(ttl, key) {
+	return (data) => {
+		if (ttl) {
+			console.log('Ajax::cacheResponse# Caching response with key:', key, 'for', ttl, 'minutes.');
+			storeValue(data.url, data.result, ttl); // Last parameter is TTL in minutes
+		}
+		return data.result;
+	}
+}
 
 function getData(url, responseParser, options = {ttl: 0}) {
-	// let data = lscache.get(url);
-	let data;
+	let data = getValue(url);
+
 	if (data) {
 		return Promise.resolve(data);
 	} else {
 		return fetch(url)
 			.then(checkResponseStatus)
 			.then(responseParser)
-			// .then(cacheResponse(options.ttl, url));
-			.then(data => data.result);
+			.then(cacheResponse(options.ttl, url));
 	}
 }
 
