@@ -51,6 +51,7 @@ const Router = {
 				this.render();
 				window.history.pushState(null, '', url);
 				this.sendLoadingEvent(false);
+				window.scrollTo(0, 0);
 			})
 			.catch(err => {
 				this.sendLoadingEvent(false);
