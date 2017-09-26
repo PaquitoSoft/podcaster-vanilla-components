@@ -1,8 +1,8 @@
 import { getAllPodcasts } from '../../api/podcaster.js';
-import BaseComponent from '../shared/base-component/base-component.js';
+import BasePage from '../shared/base-page/base-page.js';
 import PodcastSummary from './podcast-summary.js';
 
-class HomePage extends BaseComponent {
+class HomePage extends BasePage {
 
     constructor(podcasts = []) {
         super({
@@ -14,27 +14,27 @@ class HomePage extends BaseComponent {
 
 	get events() {
 		return {
-			'change|[name="filter-value"]': this.filterPodcasts
+			'keyup|[name="filter-value"]': this.filterPodcasts
 		};
 	}
 
     filterPodcasts(event) {
 		console.info(`We need to filter podcasts with: ${event.target.value}`);
-		// event.preventDefault();
 		const regExp = new RegExp(event.target.value, 'i');
-		const filteredPodcasts = this.state.originalPodcasts
+		this.state.filteredPodcasts = this.state.originalPodcasts
 			.filter(podcast => regExp.test(podcast.name + podcast.author));
-		this.updateState({
-			filter: event.target.value,
-			filteredPodcasts
-		});
+
+		this.$el.querySelector('.badge').innerHTML = this.state.filteredPodcasts.length;
+        this.$el.querySelector('.row.podcasts').innerHTML = this.renderPodcasts(this.state.filteredPodcasts);
     }
 
-    html() {
-		const podcasts = this.state.filteredPodcasts
-			.map(podcast => (new PodcastSummary(podcast)).render())
+	renderPodcasts(podcasts) {
+		return podcasts
+			.map(PodcastSummary)
 			.join('');
+	}
 
+    html() {
         return `
             <div class="podcasts-grid">
                 <div class="row filter">
@@ -47,7 +47,7 @@ class HomePage extends BaseComponent {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row podcasts">
-                            ${podcasts}
+                            ${this.renderPodcasts(this.state.filteredPodcasts)}
                         </div>
                     </div>
                 </div>

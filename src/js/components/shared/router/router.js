@@ -68,14 +68,16 @@ const Router = {
 	},
 
 	render() {
-		let html = '';
-
 		if (this.currentRouteConfig) {
 			const component = new this.currentRouteConfig.component(this.routeData);
-			html = `<div>${component.render()}</div>`;
-		}
+			const routerChildren = this.rootElement.children;
+			if (routerChildren.length) {
+				this.rootElement.replaceChild(component.render(), this.rootElement.children[0]);
+			} else {
+				this.rootElement.appendChild(component.render());
+			}
 
-		this.rootElement.innerHTML = html;
+		}
 	}
 
 }
