@@ -143,6 +143,7 @@ body {
 	margin-left: 10px;
 }
 .filter .badge {
+	min-width: 42px;
 	background-color: #337ab7;
 }
 .filter .favorites {

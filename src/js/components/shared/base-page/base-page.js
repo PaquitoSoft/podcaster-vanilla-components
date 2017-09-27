@@ -6,6 +6,7 @@ class BasePage {
 		this.componentId = ids++;
 		this.state = data;
 		this.$el = document.createElement('div');
+		this.$el.setAttribute('data-componentid', this.componentId);
 
 		Object.keys(this.events || {}).forEach(key => {
 			const [eventName, selector] = key.split('|');
@@ -20,14 +21,10 @@ class BasePage {
 
 	updateState(newState) {
 		this.state = Object.assign({}, this.state, newState);
-
-		document
-			.querySelector(`[data-componentid="${this.componentId}"]`)
-			.innerHTML = this.render();
+		this.render();
 	}
 
 	render() {
-		this.$el.setAttribute('data-componentid', this.componentId);
 		this.$el.innerHTML = this.html();
 		return this.$el;
 	}

@@ -19,13 +19,21 @@ class HomePage extends BasePage {
 	}
 
     filterPodcasts(event) {
-		console.info(`We need to filter podcasts with: ${event.target.value}`);
-		const regExp = new RegExp(event.target.value, 'i');
-		this.state.filteredPodcasts = this.state.originalPodcasts
+		if (event.ctrlKey || event.shiftKey || event.keyCode === 16 || event.keyCode === 17) return false;
+
+		const { target } = event;
+		const regExp = new RegExp(target.value, 'i');
+		const filteredPodcasts = this.state.originalPodcasts
 			.filter(podcast => regExp.test(podcast.name + podcast.author));
 
-		this.$el.querySelector('.badge').innerHTML = this.state.filteredPodcasts.length;
-        this.$el.querySelector('.row.podcasts').innerHTML = this.renderPodcasts(this.state.filteredPodcasts);
+		this.updateState({
+			filter: target.value,
+			filteredPodcasts
+		});
+
+		const input = this.$el.querySelector('[name="filter-value"]');
+		input.focus();
+		input.setSelectionRange(target.value.length, target.value.length);
     }
 
 	renderPodcasts(podcasts) {
