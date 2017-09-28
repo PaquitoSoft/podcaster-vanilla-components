@@ -49,27 +49,36 @@ const Router = {
 
 		this.sendLoadingEvent(true);
 
-		this.currentRouteConfig.component.dataLoader(urlParams)
-			.then(data => {
-				this.routeData = data;
-				this.render();
-				this.sendLoadingEvent(false);
-				window.scrollTo(0, 0);
+		import(`../../${this.currentRouteConfig.componentPath}`)
+			.then(({ default: Component }) => {
+				Component.dataLoader(urlParams)
+					.then(data => {
+						this.currentComponent = Component;
+						this.routeData = data;
+						this.render();
+						this.sendLoadingEvent(false);
+						window.scrollTo(0, 0);
 
-				if (!isHistoryEvent) {
-					window.history.pushState(null, '', url);
-				}
+						if (!isHistoryEvent) {
+							window.history.pushState(null, '', url);
+						}
+					})
+					.catch(err => {
+						this.sendLoadingEvent(false);
+						console.error(`Error trying to navigate: ${err}`);
+						console.error(err.stack);
+					});
 			})
 			.catch(err => {
 				this.sendLoadingEvent(false);
-				console.error(`Error trying to navigate: ${err}`);
+				console.error(`Error trying to load route module: ${err}`);
 				console.error(err.stack);
-			})
+			});
 	},
 
 	render() {
 		if (this.currentRouteConfig) {
-			const component = new this.currentRouteConfig.component(this.routeData);
+			const component = new this.currentComponent(this.routeData);
 			const routerChildren = this.rootElement.children;
 			if (routerChildren.length) {
 				this.rootElement.replaceChild(component.render(), this.rootElement.children[0]);

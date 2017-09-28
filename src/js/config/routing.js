@@ -1,11 +1,7 @@
-import HomePage from '../components/home-page/home-page.js';
-import PodcastPage from '../components/podcast-page/podcast-page.js';
-import EpisodePage from '../components/episode-page/episode-page.js';
-
 export const routingConfig = [
 	{
 		pattern: /^\/$/,
-		component: HomePage
+		componentPath: 'home-page/home-page.js'
 	},
 	{
 		pattern: /^\/podcast\/(\d*)\/?$/,
@@ -14,7 +10,7 @@ export const routingConfig = [
 				podcastId: urlMatch[1]
 			}
 		},
-		component: PodcastPage
+		componentPath: 'podcast-page/podcast-page.js'
 	},
 	{
 		pattern: /^\/podcast\/(\d*)\/episode\/(.*)\/?$/,
@@ -24,6 +20,6 @@ export const routingConfig = [
 				episodeId: urlMatch[2]
 			}
 		},
-		component: EpisodePage
+		componentPath: 'episode-page/episode-page.js'
 	}
 ];
