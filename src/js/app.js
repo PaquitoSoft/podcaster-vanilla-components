@@ -18,14 +18,12 @@ app.innerHTML = `
 
 const appSpinner = app.querySelector('.spinner');
 
-document.addEventListener('podcaster::loading', event => {
-	if (event.detail.isLoading) {
-		appSpinner.classList.remove('hidden');
-	} else {
-		appSpinner.classList.add('hidden');
+Router.setup(
+	app.querySelector('.main-content'),
+	({ isLoading }) => {
+		const operation = isLoading ? 'remove' : 'add';
+		appSpinner.classList[operation]('hidden');
 	}
-});
-
-Router.setup(app.querySelector('.main-content'));
+);
 
 document.getElementById('root').appendChild(app);

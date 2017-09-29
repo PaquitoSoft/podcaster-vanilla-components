@@ -2,9 +2,10 @@ import { routingConfig } from '../../../config/routing.js';
 
 const Router = {
 
-	setup(mountingElement) {
+	setup(mountingElement, loadingCallback) {
 		this.rootElement = mountingElement;
-		this.currentRouteConfig;
+		this.loadingCallback = loadingCallback;
+		this.currentComponent;
 		this.routeData;
 
 		document.addEventListener('click', event => {
@@ -32,25 +33,23 @@ const Router = {
 	},
 
 	sendLoadingEvent(isLoading) {
-		const event = new CustomEvent('podcaster::loading', {
-			detail: { isLoading }
-		});
-		document.dispatchEvent(event);
+		this.loadingCallback({ isLoading });
 	},
 
 	changeUrlHandler(url, isHistoryEvent) {
-		this.currentRouteConfig = this.getRouteConfigForUrl(url);
+		const currentRouteConfig = this.getRouteConfigForUrl(url);
 
-		if (!this.currentRouteConfig) throw new Error('No route found for URL: ' + url);
+		if (!currentRouteConfig) throw new Error('No route found for URL: ' + url);
 
-		const urlParams = this.currentRouteConfig.paramsResolver ?
-			this.currentRouteConfig.paramsResolver(url.match(this.currentRouteConfig.pattern)) :
+		const urlParams = currentRouteConfig.paramsResolver ?
+			currentRouteConfig.paramsResolver(url.match(currentRouteConfig.pattern)) :
 			{};
 
 		this.sendLoadingEvent(true);
 
-		this.currentRouteConfig.component.dataLoader(urlParams)
+		currentRouteConfig.component.dataLoader(urlParams)
 			.then(data => {
+				this.currentComponent = currentRouteConfig.component;
 				this.routeData = data;
 				this.render();
 				this.sendLoadingEvent(false);
@@ -68,15 +67,14 @@ const Router = {
 	},
 
 	render() {
-		if (this.currentRouteConfig) {
-			const component = new this.currentRouteConfig.component(this.routeData);
+		if (this.currentComponent) {
+			const component = new this.currentComponent(this.routeData);
 			const routerChildren = this.rootElement.children;
 			if (routerChildren.length) {
 				this.rootElement.replaceChild(component.render(), this.rootElement.children[0]);
 			} else {
 				this.rootElement.appendChild(component.render());
 			}
-
 		}
 	}
 
