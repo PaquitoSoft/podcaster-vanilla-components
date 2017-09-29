@@ -1,12 +1,10 @@
-let ids = 0;
-
 class BasePage {
 
 	constructor(data = {}) {
-		this.componentId = ids++;
 		this.state = data;
+		// Create the main HTMLElement for this page so we can
+		// attach DOMEvent listeners to it
 		this.$el = document.createElement('div');
-		this.$el.setAttribute('data-componentid', this.componentId);
 
 		Object.keys(this.events || {}).forEach(key => {
 			const [eventName, selector] = key.split('|');

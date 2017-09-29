@@ -1,3 +1,4 @@
+import routingConfig from './config/routing.js';
 import Router from './components/shared/router/router.js';
 
 const app = document.createElement('div');
@@ -16,14 +17,13 @@ app.innerHTML = `
 	<div class="main-content"></div>
 `;
 
-const appSpinner = app.querySelector('.spinner');
-
-Router.setup(
-	app.querySelector('.main-content'),
-	({ isLoading }) => {
+Router.setup({
+	routingConfig,
+	mountingElement: app.querySelector('.main-content'),
+	loadingCallback: function(appSpinner, isLoading) {
 		const operation = isLoading ? 'remove' : 'add';
 		appSpinner.classList[operation]('hidden');
-	}
-);
+	}.bind(null, app.querySelector('.spinner'))
+});
 
 document.getElementById('root').appendChild(app);

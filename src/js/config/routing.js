@@ -2,7 +2,7 @@ import HomePage from '../components/home-page/home-page.js';
 import PodcastPage from '../components/podcast-page/podcast-page.js';
 import EpisodePage from '../components/episode-page/episode-page.js';
 
-export const routingConfig = [
+const routingConfig = [
 	{
 		pattern: /^\/$/,
 		component: HomePage
@@ -27,3 +27,5 @@ export const routingConfig = [
 		component: EpisodePage
 	}
 ];
+
+export default routingConfig;
