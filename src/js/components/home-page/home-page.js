@@ -1,8 +1,8 @@
 import { getAllPodcasts } from '../../api/podcaster.js';
-import BasePage from '../shared/base-page/base-page.js';
+import BaseComponent from '../shared/base-component/base-component.js';
 import PodcastSummary from './podcast-summary.js';
 
-class HomePage extends BasePage {
+class HomePage extends BaseComponent {
 
     constructor(podcasts = []) {
 		// Call parent class with instance state
@@ -55,20 +55,14 @@ class HomePage extends BasePage {
     html() {
         return `
             <div class="podcasts-grid">
-                <div class="row filter">
-                    <div class="col-md-5 col-md-offset-7">
-                        <span class="badge">${this.state.filteredPodcasts.length}</span>
-                        <input id="filter" type="text" name="filter-value" class="form-control input-lg" autoFocus
-                            placeholder="Filter podcasts..." value="${this.state.filter}">
-                    </div>
+                <div class="filter">
+					<span class="badge">${this.state.filteredPodcasts.length}</span>
+					<input type="text" name="filter-value" autoFocus
+						placeholder="Filter podcasts..." value="${this.state.filter}">
                 </div>
-                <div class="row">
-	                    <div class="col-md-12">
-                        <div class="row podcasts">
-                            ${this.renderPodcasts(this.state.filteredPodcasts)}
-                        </div>
-                    </div>
-                </div>
+				<div class="podcasts-list">
+					${this.renderPodcasts(this.state.filteredPodcasts)}
+				</div>
             </div>
         `;
     }

@@ -1,6 +1,6 @@
 export default function Sidebar(podcast) {
 	return `
-		<div class="col-md-3 section">
+		<div class="section sidebar">
 			<div class="podcast-cover text-center">
 				<a href="${`/podcast/${podcast.id}`}">
 					<img src="${podcast.cover}" alt="${podcast.name}">

@@ -1,8 +1,8 @@
 import { getPodcastDetail } from '../../api/podcaster.js';
-import BasePage from '../shared/base-page/base-page.js';
+import BaseComponent from '../shared/base-component/base-component.js';
 import Sidebar from '../shared/sidebar/sidebar.js';
 
-class EpisodePage extends BasePage {
+class EpisodePage extends BaseComponent {
 
 	constructor({ podcast, currentEpisode }) {
 		super({	podcast, currentEpisode });
@@ -10,11 +10,13 @@ class EpisodePage extends BasePage {
 
 	html() {
 		return `
-			<div>
-				${Sidebar(this.state.podcast)}
+			<div class="episode-detail-page page-with-sidebar">
+				<div class="sidebar-section">
+					${Sidebar(this.state.podcast)}
+				</div>
 
-				<div class="col-md-8 col-md-offset-1 section">
-					<div class="episode-detail">
+				<div class="content-section">
+					<div class="episode-detail section">
 						<div class="title">${this.state.currentEpisode.title}</div>
 						<div class="subtitle">${this.state.currentEpisode.description}</div>
 						<hr/>

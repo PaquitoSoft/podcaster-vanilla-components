@@ -4,7 +4,7 @@
   "description": "Sample Podcaster App built with vanilla JS components",
   "main": "index.js",
   "scripts": {
-    "start": "node ./node_modules/node-static/bin/cli.js . -c 1"
+    "start": "node ./node_modules/node-static/bin/cli.js . -c 1 --spa"
   },
   "author": "PaquitoSoft",
   "license": "ISC",

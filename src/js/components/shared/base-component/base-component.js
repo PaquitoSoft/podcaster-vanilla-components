@@ -1,4 +1,4 @@
-class BasePage {
+class BaseComponent {
 
 	constructor(data = {}) {
 		this.state = data;
@@ -29,4 +29,4 @@ class BasePage {
 
 }
 
-export default BasePage;
+export default BaseComponent;

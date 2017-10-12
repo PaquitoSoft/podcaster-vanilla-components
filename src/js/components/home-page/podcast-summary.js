@@ -1,6 +1,6 @@
 export default function PodcastSummary(podcast) {
 	return `
-		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 podcast-summary">
+		<div class="podcast-summary">
 			<div class="box">
 				<a href="/podcast/${podcast.id}">
 					<div class="box-icon">
